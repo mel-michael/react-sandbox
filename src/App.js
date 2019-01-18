@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import './App.css';
 // import NameForm from './NameForm';
 // import MessageForm from './MessageForm';
-import SelectTag from './SelectTag';
+// import SelectTag from './SelectTag';
+// import FileInputForm from './FileInputForm';
 
 class App extends Component {
   render() {
@@ -12,80 +13,58 @@ class App extends Component {
         <header className="App-header">
           {/* <NameForm /> */}
           {/* <MessageForm /> */}
-          <SelectTag />
+          {/* <SelectTag /> */}
+          <FileInputForm />
         </header>
       </div>
     );
   }
 }
 
+class FileInputForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      submitted: null
+    }
+    this.singleFileInput = React.createRef();
+    this.multipleFileInput = React.createRef();
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFile = this.handleFile.bind(this);
+  }
 
-// class SelectTag extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       inputValue: 'default',
-//       selectedOpt: [],
-//       submitted: null
-//     }
-//     this.handleChange = this.handleChange.bind(this);
-//     this.handleSubmit = this.handleSubmit.bind(this);
-//     this.handleMultipleChange = this.handleMultipleChange.bind(this);
-//   }
+  handleFile() {
+    console.log('>>', this.singleFileInput.current.files)
+  }
 
-//   handleChange(e) {
-//     // console.log('single', e.target.value);
-//     this.setState({ inputValue: e.target.value });
-//   }
+  handleSubmit(e) {
+    e.preventDefault();
+    let fileNames = `${this.singleFileInput.current.files[0].name}`;
+    const multipleFiles = this.multipleFileInput.current.files;
+    Object.keys(multipleFiles).forEach(file => {
+      fileNames += `, ${multipleFiles[file].name}`;
+    });
+    this.setState({ submitted: fileNames })
+  }
 
-//   handleMultipleChange(e) {
-//     // console.log('multiple', e.target.value);
-//     let options = e.target.options;
-//     let selectedValues = [];
-//     for (let i = 0; i < options.length; i++) {
-//       if (options[i].selected) {
-//         selectedValues.push(options[i].value);
-//       }
-//     }
-
-//     this.setState({ selectedOpt: this.state.selectedOpt.concat(selectedValues) });
-//   }
-
-//   handleSubmit(e) {
-//     e.preventDefault();
-//     const { inputValue, selectedOpt } = this.state;
-//     this.setState({ submitted: `${inputValue}, ${[...selectedOpt]}` })
-//   }
-
-//   render() {
-//     const { inputValue, submitted, selectedOpt } = this.state;
-//     return (
-//       <div>
-//         Select Tag Form
-//         <form onSubmit={this.handleSubmit}>
-//           <p> Fvaourite Juice: 
-//             <select value={inputValue} onChange={this.handleChange}>
-//               <option value="default" disabled>Select one</option>
-//               <option value="orange">Orange</option>
-//               <option value="coconut">Coconut</option>
-//               <option value="apple">Apple</option>
-//               <option value="mango">Mango</option>
-//             </select>
-//           </p>
-//           <p> Preferred Language: 
-//             <select multiple={true} value={selectedOpt} onChange={this.handleMultipleChange}>
-//               <option value="react">React</option>
-//               <option value="angular">Angular</option>
-//               <option value="ember">Ember</option>
-//               <option value="vue">Vue</option>
-//             </select>
-//           </p>
-//           <input type="submit" value="Submit" />
-//         </form>
-//         {submitted && <p>{submitted}</p>}
-//       </div>
-//     );
-//   }
-// }
+  render() {
+    const { submitted } = this.state;
+    return (
+      <div>
+        File Input Tag
+        <form onSubmit={this.handleSubmit}>
+          <p> Select One File: 
+            <input type="file"  ref={this.singleFileInput} onChange={this.handleFile} />
+          </p>
+          <p> Select Multiple File: 
+            <input type="file" multiple ref={this.multipleFileInput} />
+          </p>
+          <button type="submit">Submit</button>
+        </form>
+        {submitted && <p>Submitted file names are:  {submitted}</p>}
+      </div>
+    );
+  }
+}
 
 export default App;
