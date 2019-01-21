@@ -22,23 +22,28 @@ class App extends Component {
 
 const Home = () => <h3>Home</h3>;
 const About = () => <h3>About</h3>;
-const Topic = ({ match }) => <h3>Requested Param: { match.params.id}</h3>;
-const Topics = ({ match }) => (
-  <div>
-    <h2>Topics</h2>
+const Topic = ({ match }) => <h3>Requested Param: {match.params.id}</h3>;
+const Topics = (props) => {
+  console.log('tps >>>>>', props);
+  const { match } = props;
 
-    <ul>
-      <li>
-        <Link to={`${match.url}/components`}>Components</Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/props-v-state`}>Props vs state</Link>
-      </li>
-    </ul>
-    <Route path={`${match.path}/:id`} component={Topic} />
-    <Route exact path={match.path} render={() => <h3>Please select a topic</h3>} />
-  </div>
-)
+  return (
+    <div>
+      <h2>Topics</h2>
+
+      <ul>
+        <li>
+          <Link to={`${match.url}/components`}>Components</Link>
+        </li>
+        <li>
+          <Link to={`${match.url}/props-v-state`}>Props vs state</Link>
+        </li>
+      </ul>
+      <Route path={`${match.path}/:id`} component={Topic} />
+      <Route exact path={match.path} render={() => <h3>Please select a topic</h3>} />
+    </div>
+  );
+}
 
 const Header = () => (
   <ul>
