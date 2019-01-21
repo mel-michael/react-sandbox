@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom';
 import './App.css';
 
 // import BasicRouting from './BasicRouting';
@@ -55,6 +55,12 @@ const Topics = (props) => {
         <li>
           <Link to={`${match.url}/props-v-state`}>Props vs state</Link>
         </li>
+        {
+          /* Add this if you want to force a REDIRECT
+          <li>
+            <Redirect to="/about" />
+          </li> */
+        }
       </ul>
       <Route path={`${match.path}/:id`} component={Topic} />
       <Route exact path={match.path} render={() => <h3>Please select a topic</h3>} />
