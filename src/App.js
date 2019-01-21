@@ -6,6 +6,8 @@ import './App.css';
 
 class App extends Component {
   render() {
+
+    const personalVar = 'I am being rendered using Route Rendering props';
     return (
       <Router>
         <div className="App">
@@ -13,7 +15,11 @@ class App extends Component {
           <Header />
           <Switch>
             <Route path="/" exact component={Home} />
-            <Route path="/about" component={About} />
+            {/* <Route path="/about" component={About} /> */}
+            <Route 
+              path="/about" 
+              render={props => <About {...props} extra={personalVar} />} 
+            />
             <Route path="/topics" component={Topics} />
             <Route render={() => <h3>Oh dear! 404</h3>} />
           </Switch>
@@ -24,7 +30,15 @@ class App extends Component {
 }
 
 const Home = () => <h3>Home</h3>;
-const About = () => <h3>About</h3>;
+const About = ({extra}) => {
+  // console.log('about', props)
+  return (
+    <div>
+      <h3>About</h3>
+      <p>{extra}</p>
+    </div>
+  );
+}
 const Topic = ({ match }) => <h3>Requested Param: {match.params.id}</h3>;
 const Topics = (props) => {
   console.log('tps >>>>>', props);
